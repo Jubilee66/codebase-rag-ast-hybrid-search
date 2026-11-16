@@ -1,0 +1,138 @@
+[
+  {
+    "source": "config.py",
+    "type": "module_block",
+    "name": "global_scope",
+    "content": "APP_NAME = \"Codebase RAG Demo\"\nDATABASE_URL = \"sqlite:///demo.db\"\nPASSWORD_MIN_LENGTH = 8",
+    "start_line": 1,
+    "end_line": 3
+  },
+  {
+    "source": "database/db.py",
+    "type": "functiondef",
+    "name": "save_user",
+    "content": "def save_user(user: dict) -> dict:\n    _USERS[user[\"email\"]] = user\n    return user",
+    "start_line": 3,
+    "end_line": 5
+  },
+  {
+    "source": "database/db.py",
+    "type": "functiondef",
+    "name": "find_user",
+    "content": "def find_user(email: str):\n    return _USERS.get(email)",
+    "start_line": 7,
+    "end_line": 8
+  },
+  {
+    "source": "database/db.py",
+    "type": "functiondef",
+    "name": "list_users",
+    "content": "def list_users() -> list[dict]:\n    return list(_USERS.values())",
+    "start_line": 10,
+    "end_line": 11
+  },
+  {
+    "source": "database/db.py",
+    "type": "module_block",
+    "name": "global_scope",
+    "content": "_USERS = {}\n",
+    "start_line": 1,
+    "end_line": 2
+  },
+  {
+    "source": "main.py",
+    "type": "functiondef",
+    "name": "run_demo",
+    "content": "def run_demo():\n    user = register_user(\"jane@example.com\", \"correct-horse\")\n    print(\"Registered:\", user[\"email\"])\n\n    logged_in = authenticate(\"jane@example.com\", \"correct-horse\")\n    print(\"Authenticated:\", logged_in)\n\n    fetched = get_user(\"jane@example.com\")\n    print(\"Fetched:\", fetched)",
+    "start_line": 4,
+    "end_line": 12
+  },
+  {
+    "source": "main.py",
+    "type": "module_block",
+    "name": "global_scope",
+    "content": "from data.sample_repository.services.user_service import register_user, get_user\nfrom data.sample_repository.services.auth_service import authenticate\n",
+    "start_line": 1,
+    "end_line": 3
+  },
+  {
+    "source": "main.py",
+    "type": "module_block",
+    "name": "global_scope",
+    "content": "\nif __name__ == \"__main__\":\n    run_demo()",
+    "start_line": 13,
+    "end_line": 15
+  },
+  {
+    "source": "models/user.py",
+    "type": "classdef",
+    "name": "User",
+    "content": "class User:\n    email: str\n    password_hash: str\n\n    def to_dict(self) -> dict:\n        return {\n            \"email\": self.email,\n            \"password_hash\": self.password_hash,\n        }",
+    "start_line": 4,
+    "end_line": 12
+  },
+  {
+    "source": "models/user.py",
+    "type": "module_block",
+    "name": "global_scope",
+    "content": "from dataclasses import dataclass\n\n@dataclass",
+    "start_line": 1,
+    "end_line": 3
+  },
+  {
+    "source": "services/auth_service.py",
+    "type": "functiondef",
+    "name": "authenticate",
+    "content": "def authenticate(email: str, password: str) -> bool:\n    user = find_user(email)\n    if user is None:\n        return False\n    return user[\"password_hash\"] == hash_password(password)",
+    "start_line": 4,
+    "end_line": 8
+  },
+  {
+    "source": "services/auth_service.py",
+    "type": "module_block",
+    "name": "global_scope",
+    "content": "from RAG.codebase_rag_project.data.sample_repository.database.db import find_user\nfrom RAG.codebase_rag_project.data.sample_repository.utils.security import hash_password\n",
+    "start_line": 1,
+    "end_line": 3
+  },
+  {
+    "source": "services/user_service.py",
+    "type": "functiondef",
+    "name": "register_user",
+    "content": "def register_user(email: str, password: str) -> dict:\n    if len(password) < PASSWORD_MIN_LENGTH:\n        raise ValueError(\"Password is too short\")\n    if find_user(email):\n        raise ValueError(\"User already exists\")\n\n    user = User(email=email, password_hash=hash_password(password))\n    return save_user(user.to_dict())",
+    "start_line": 6,
+    "end_line": 13
+  },
+  {
+    "source": "services/user_service.py",
+    "type": "functiondef",
+    "name": "get_user",
+    "content": "def get_user(email: str):\n    return find_user(email)",
+    "start_line": 15,
+    "end_line": 16
+  },
+  {
+    "source": "services/user_service.py",
+    "type": "module_block",
+    "name": "global_scope",
+    "content": "from data.sample_repository.config import PASSWORD_MIN_LENGTH\nfrom data.sample_repository.database.db import find_user, save_user\nfrom data.sample_repository.models.user import User\nfrom data.sample_repository.utils.security import hash_password\n",
+    "start_line": 1,
+    "end_line": 5
+  },
+  {
+    "source": "utils/security.py",
+    "type": "functiondef",
+    "name": "hash_password",
+    "content": "def hash_password(password: str) -> str:\n    # Demo only: use a password hashing algorithm such as Argon2 or bcrypt in production.\n    return hashlib.sha256(password.encode(\"utf-8\")).hexdigest()",
+    "start_line": 3,
+    "end_line": 5
+  },
+  {
+    "source": "utils/security.py",
+    "type": "module_block",
+    "name": "global_scope",
+    "content": "import hashlib\n",
+    "start_line": 1,
+    "end_line": 2
+  }
+]

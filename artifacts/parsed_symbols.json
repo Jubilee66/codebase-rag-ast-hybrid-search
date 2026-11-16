@@ -1,0 +1,174 @@
+[
+  {
+    "symbol_type": "module",
+    "symbol_name": "config.py",
+    "file_path": "config.py",
+    "start_line": 1,
+    "end_line": 3,
+    "code": "APP_NAME = \"Codebase RAG Demo\"\nDATABASE_URL = \"sqlite:///demo.db\"\nPASSWORD_MIN_LENGTH = 8\n",
+    "docstring": "",
+    "imports": []
+  },
+  {
+    "symbol_type": "module",
+    "symbol_name": "__init__.py",
+    "file_path": "database/__init__.py",
+    "start_line": 1,
+    "end_line": 1,
+    "code": "",
+    "docstring": "",
+    "imports": []
+  },
+  {
+    "symbol_type": "function",
+    "symbol_name": "save_user",
+    "file_path": "database/db.py",
+    "start_line": 3,
+    "end_line": 5,
+    "code": "def save_user(user: dict) -> dict:\n    _USERS[user[\"email\"]] = user\n    return user",
+    "docstring": "",
+    "imports": []
+  },
+  {
+    "symbol_type": "function",
+    "symbol_name": "find_user",
+    "file_path": "database/db.py",
+    "start_line": 7,
+    "end_line": 8,
+    "code": "def find_user(email: str):\n    return _USERS.get(email)",
+    "docstring": "",
+    "imports": []
+  },
+  {
+    "symbol_type": "function",
+    "symbol_name": "list_users",
+    "file_path": "database/db.py",
+    "start_line": 10,
+    "end_line": 11,
+    "code": "def list_users() -> list[dict]:\n    return list(_USERS.values())",
+    "docstring": "",
+    "imports": []
+  },
+  {
+    "symbol_type": "function",
+    "symbol_name": "run_demo",
+    "file_path": "main.py",
+    "start_line": 4,
+    "end_line": 12,
+    "code": "def run_demo():\n    user = register_user(\"jane@example.com\", \"correct-horse\")\n    print(\"Registered:\", user[\"email\"])\n\n    logged_in = authenticate(\"jane@example.com\", \"correct-horse\")\n    print(\"Authenticated:\", logged_in)\n\n    fetched = get_user(\"jane@example.com\")\n    print(\"Fetched:\", fetched)",
+    "docstring": "",
+    "imports": [
+      "data.sample_repository.services.auth_service",
+      "data.sample_repository.services.user_service"
+    ]
+  },
+  {
+    "symbol_type": "module",
+    "symbol_name": "__init__.py",
+    "file_path": "models/__init__.py",
+    "start_line": 1,
+    "end_line": 1,
+    "code": "",
+    "docstring": "",
+    "imports": []
+  },
+  {
+    "symbol_type": "class",
+    "symbol_name": "User",
+    "file_path": "models/user.py",
+    "start_line": 4,
+    "end_line": 12,
+    "code": "class User:\n    email: str\n    password_hash: str\n\n    def to_dict(self) -> dict:\n        return {\n            \"email\": self.email,\n            \"password_hash\": self.password_hash,\n        }",
+    "docstring": "",
+    "imports": [
+      "dataclasses"
+    ]
+  },
+  {
+    "symbol_type": "function",
+    "symbol_name": "to_dict",
+    "file_path": "models/user.py",
+    "start_line": 8,
+    "end_line": 12,
+    "code": "def to_dict(self) -> dict:\n        return {\n            \"email\": self.email,\n            \"password_hash\": self.password_hash,\n        }",
+    "docstring": "",
+    "imports": [
+      "dataclasses"
+    ]
+  },
+  {
+    "symbol_type": "module",
+    "symbol_name": "__init__.py",
+    "file_path": "services/__init__.py",
+    "start_line": 1,
+    "end_line": 1,
+    "code": "",
+    "docstring": "",
+    "imports": []
+  },
+  {
+    "symbol_type": "function",
+    "symbol_name": "authenticate",
+    "file_path": "services/auth_service.py",
+    "start_line": 4,
+    "end_line": 8,
+    "code": "def authenticate(email: str, password: str) -> bool:\n    user = find_user(email)\n    if user is None:\n        return False\n    return user[\"password_hash\"] == hash_password(password)",
+    "docstring": "",
+    "imports": [
+      "RAG.codebase_rag_project.data.sample_repository.database.db",
+      "RAG.codebase_rag_project.data.sample_repository.utils.security"
+    ]
+  },
+  {
+    "symbol_type": "function",
+    "symbol_name": "register_user",
+    "file_path": "services/user_service.py",
+    "start_line": 6,
+    "end_line": 13,
+    "code": "def register_user(email: str, password: str) -> dict:\n    if len(password) < PASSWORD_MIN_LENGTH:\n        raise ValueError(\"Password is too short\")\n    if find_user(email):\n        raise ValueError(\"User already exists\")\n\n    user = User(email=email, password_hash=hash_password(password))\n    return save_user(user.to_dict())",
+    "docstring": "",
+    "imports": [
+      "data.sample_repository.config",
+      "data.sample_repository.database.db",
+      "data.sample_repository.models.user",
+      "data.sample_repository.utils.security"
+    ]
+  },
+  {
+    "symbol_type": "function",
+    "symbol_name": "get_user",
+    "file_path": "services/user_service.py",
+    "start_line": 15,
+    "end_line": 16,
+    "code": "def get_user(email: str):\n    return find_user(email)",
+    "docstring": "",
+    "imports": [
+      "data.sample_repository.config",
+      "data.sample_repository.database.db",
+      "data.sample_repository.models.user",
+      "data.sample_repository.utils.security"
+    ]
+  },
+  {
+    "symbol_type": "module",
+    "symbol_name": "__init__.py",
+    "file_path": "utils/__init__.py",
+    "start_line": 1,
+    "end_line": 1,
+    "code": "",
+    "docstring": "",
+    "imports": []
+  },
+  {
+    "symbol_type": "function",
+    "symbol_name": "hash_password",
+    "file_path": "utils/security.py",
+    "start_line": 3,
+    "end_line": 5,
+    "code": "def hash_password(password: str) -> str:\n    # Demo only: use a password hashing algorithm such as Argon2 or bcrypt in production.\n    return hashlib.sha256(password.encode(\"utf-8\")).hexdigest()",
+    "docstring": "",
+    "imports": [
+      "hashlib"
+    ]
+  }
+]

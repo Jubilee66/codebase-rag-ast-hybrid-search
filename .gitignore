@@ -1,0 +1,12 @@
+# Nested RAG repos
+data/RAG_1_DocumentRAG/
+data/RAG_2_MultimodalRAG/
+
+# Extracted images
+**/extracted_images/
+**/extracted_images1/
+
+# Embeddings
+**/image_embeddings.npy
+**/image_captions.json
+**/image_manifest.json

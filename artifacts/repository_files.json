@@ -1,0 +1,57 @@
+[
+  {
+    "file_path": "config.py",
+    "content": "APP_NAME = \"Codebase RAG Demo\"\nDATABASE_URL = \"sqlite:///demo.db\"\nPASSWORD_MIN_LENGTH = 8\n",
+    "size_bytes": 90
+  },
+  {
+    "file_path": "database/__init__.py",
+    "content": "",
+    "size_bytes": 0
+  },
+  {
+    "file_path": "database/db.py",
+    "content": "_USERS = {}\n\ndef save_user(user: dict) -> dict:\n    _USERS[user[\"email\"]] = user\n    return user\n\ndef find_user(email: str):\n    return _USERS.get(email)\n\ndef list_users() -> list[dict]:\n    return list(_USERS.values())\n",
+    "size_bytes": 220
+  },
+  {
+    "file_path": "main.py",
+    "content": "from data.sample_repository.services.user_service import register_user, get_user\nfrom data.sample_repository.services.auth_service import authenticate\n\ndef run_demo():\n    user = register_user(\"jane@example.com\", \"correct-horse\")\n    print(\"Registered:\", user[\"email\"])\n\n    logged_in = authenticate(\"jane@example.com\", \"correct-horse\")\n    print(\"Authenticated:\", logged_in)\n\n    fetched = get_user(\"jane@example.com\")\n    print(\"Fetched:\", fetched)\n\nif __name__ == \"__main__\":\n    run_demo()\n",
+    "size_bytes": 494
+  },
+  {
+    "file_path": "models/__init__.py",
+    "content": "",
+    "size_bytes": 0
+  },
+  {
+    "file_path": "models/user.py",
+    "content": "from dataclasses import dataclass\n\n@dataclass\nclass User:\n    email: str\n    password_hash: str\n\n    def to_dict(self) -> dict:\n        return {\n            \"email\": self.email,\n            \"password_hash\": self.password_hash,\n        }\n",
+    "size_bytes": 237
+  },
+  {
+    "file_path": "services/__init__.py",
+    "content": "",
+    "size_bytes": 0
+  },
+  {
+    "file_path": "services/auth_service.py",
+    "content": "from RAG.codebase_rag_project.data.sample_repository.database.db import find_user\nfrom RAG.codebase_rag_project.data.sample_repository.utils.security import hash_password\n\ndef authenticate(email: str, password: str) -> bool:\n    user = find_user(email)\n    if user is None:\n        return False\n    return user[\"password_hash\"] == hash_password(password)\n",
+    "size_bytes": 355
+  },
+  {
+    "file_path": "services/user_service.py",
+    "content": "from data.sample_repository.config import PASSWORD_MIN_LENGTH\nfrom data.sample_repository.database.db import find_user, save_user\nfrom data.sample_repository.models.user import User\nfrom data.sample_repository.utils.security import hash_password\n\ndef register_user(email: str, password: str) -> dict:\n    if len(password) < PASSWORD_MIN_LENGTH:\n        raise ValueError(\"Password is too short\")\n    if find_user(email):\n        raise ValueError(\"User already exists\")\n\n    user = User(email=email, password_hash=hash_password(password))\n    return save_user(user.to_dict())\n\ndef get_user(email: str):\n    return find_user(email)\n",
+    "size_bytes": 629
+  },
+  {
+    "file_path": "utils/__init__.py",
+    "content": "",
+    "size_bytes": 0
+  },
+  {
+    "file_path": "utils/security.py",
+    "content": "import hashlib\n\ndef hash_password(password: str) -> str:\n    # Demo only: use a password hashing algorithm such as Argon2 or bcrypt in production.\n    return hashlib.sha256(password.encode(\"utf-8\")).hexdigest()\n",
+    "size_bytes": 211
+  }
+]
